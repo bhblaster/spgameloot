@@ -2,125 +2,143 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useCart } from '@/lib/cart';
 import CartDrawer from './CartDrawer';
 import SearchModal from './SearchModal';
-import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const { itemCount, isCartOpen, setIsCartOpen } = useCart();
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const { itemCount } = useCart();
   const pathname = usePathname();
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
+
   const navLinks = [
-    { name: 'Home', path: '/' },
-    { name: 'Games', path: '/games' },
+    { name: 'Store', path: '/' },
+    { name: 'Discover', path: '/games' },
     { name: 'Categories', path: '/categories' },
     { name: 'Deals', path: '/deals' },
   ];
 
   return (
     <>
-      <header 
-        className={`fixed top-0 w-full z-40 transition-all duration-300 ${
-          isScrolled ? 'bg-primary/95 backdrop-blur-md shadow-lg py-4' : 'bg-gradient-to-b from-black/80 to-transparent py-6'
+      <nav 
+        className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
+          scrolled 
+            ? 'bg-primary/90 backdrop-blur-md border-b border-white/5 py-4' 
+            : 'bg-gradient-to-b from-primary/80 to-transparent py-6'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex items-center justify-between">
+            
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2 group">
-              <span className="text-2xl font-display font-bold tracking-wider text-white group-hover:glow-text transition-all">
-                SP <span className="text-accent">GAME</span> LOOT
+            <Link href="/" className="group flex items-center gap-2">
+              <div className="w-8 h-8 bg-accent clip-angled-tl flex items-center justify-center transition-transform group-hover:scale-110">
+                <span className="text-white font-display font-bold leading-none">SP</span>
+              </div>
+              <span className="font-display font-bold text-xl tracking-[0.2em] text-light uppercase">
+                Game<span className="text-accent">Loot</span>
               </span>
             </Link>
 
             {/* Desktop Nav */}
-            <nav className="hidden md:flex gap-8">
+            <div className="hidden md:flex items-center gap-8">
               {navLinks.map((link) => (
                 <Link 
                   key={link.path} 
                   href={link.path}
-                  className={`text-sm font-medium uppercase tracking-widest transition-colors ${
-                    pathname === link.path ? 'text-accent' : 'text-gray-300 hover:text-white'
+                  className={`text-sm font-bold tracking-widest uppercase transition-colors relative ${
+                    pathname === link.path ? 'text-accent' : 'text-muted hover:text-light'
                   }`}
                 >
                   {link.name}
+                  {pathname === link.path && (
+                    <span className="absolute -bottom-2 left-0 w-full h-[2px] bg-accent glow-box"></span>
+                  )}
                 </Link>
               ))}
-            </nav>
+            </div>
 
             {/* Actions */}
             <div className="flex items-center gap-4">
               <button 
-                onClick={() => setIsSearchOpen(true)}
-                className="text-gray-300 hover:text-white transition-colors p-2"
+                onClick={() => setSearchOpen(true)}
+                className="text-muted hover:text-light transition-colors p-2"
                 aria-label="Search"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </button>
-              
+
               <button 
-                onClick={() => setIsCartOpen(true)}
-                className="relative text-gray-300 hover:text-white transition-colors p-2"
+                onClick={() => setCartOpen(true)}
+                className="relative text-muted hover:text-light transition-colors p-2"
                 aria-label="Cart"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                 </svg>
                 {itemCount > 0 && (
-                  <span className="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-white transform translate-x-1/4 -translate-y-1/4 bg-accent rounded-full">
+                  <span className="absolute top-0 right-0 w-4 h-4 bg-accent text-white text-[10px] font-bold flex items-center justify-center rounded-full border border-primary">
                     {itemCount}
                   </span>
                 )}
               </button>
 
-              {/* Mobile menu button */}
+              {/* Mobile Menu Toggle */}
               <button 
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="md:hidden text-gray-300 hover:text-white p-2"
+                className="md:hidden text-muted p-2"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  {mobileMenuOpen ? (
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  ) : (
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  )}
                 </svg>
               </button>
             </div>
           </div>
         </div>
 
-        {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden bg-card border-t border-gray-800 mt-4 py-4 px-4 shadow-xl">
-            <nav className="flex flex-col gap-4">
+        {/* Mobile Menu Dropdown */}
+        {mobileMenuOpen && (
+          <div className="md:hidden absolute top-full left-0 w-full bg-secondary border-b border-white/10 shadow-2xl">
+            <div className="px-4 py-4 flex flex-col gap-4">
               {navLinks.map((link) => (
                 <Link 
                   key={link.path} 
                   href={link.path}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={`text-sm font-medium uppercase tracking-widest ${
-                    pathname === link.path ? 'text-accent' : 'text-gray-300'
-                  }`}
+                  className="text-sm font-bold tracking-widest uppercase text-light p-2 border-b border-white/5"
                 >
                   {link.name}
                 </Link>
               ))}
-            </nav>
+            </div>
           </div>
         )}
-      </header>
+      </nav>
 
-      <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
-      <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+      <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} />
+      {searchOpen && <SearchModal onClose={() => setSearchOpen(false)} />}
     </>
   );
 }
