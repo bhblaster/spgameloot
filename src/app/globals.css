@@ -1,0 +1,59 @@
+@import "tailwindcss";
+@config "../../tailwind.config.ts";
+
+@theme {
+  --color-primary: #0a0a0f;
+  --color-secondary: #12121a;
+  --color-card: #16161f;
+  --color-elevated: #1a1a28;
+  --color-accent: #e63946;
+  --color-accent-glow: #ff2d6b;
+  --color-muted: #8888a0;
+  --color-light: #f0f0f5;
+  --font-display: var(--font-rajdhani), sans-serif;
+  --font-sans: var(--font-inter), sans-serif;
+}
+
+:root {
+  --foreground-rgb: 240, 240, 245;
+  --background-start-rgb: 10, 10, 15;
+  --background-end-rgb: 10, 10, 15;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-start-rgb));
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .clip-angled {
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%);
+  }
+  
+  .clip-angled-button {
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
+  }
+  
+  .glow-text {
+    text-shadow: 0 0 10px rgba(255, 45, 107, 0.5);
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0a0f; 
+}
+::-webkit-scrollbar-thumb {
+  background: #1a1a28; 
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #e63946; 
+}
