@@ -1,3 +1,4 @@
+'use client';
 import { games } from '@/data/games';
 import { categories } from '@/data/categories';
 import Hero from '@/components/Hero';
