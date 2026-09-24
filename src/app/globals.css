@@ -1,64 +1,55 @@
 @import "tailwindcss";
-@config "../../tailwind.config.ts";
 
 @theme {
-  --color-primary: #050507;
-  --color-secondary: #0a0a0f;
-  --color-card: #0f0f16;
-  --color-elevated: #151520;
-  --color-accent: #e63946;
-  --color-accent-glow: #ff2d6b;
-  --color-muted: #8888a0;
-  --color-light: #f0f0f5;
-  --font-display: var(--font-rajdhani), sans-serif;
-  --font-sans: var(--font-inter), sans-serif;
+  --color-background-outer: #8a93a6; /* Muted slate blue/gray outer */
+  --color-shell: #211d1e; /* Dark charcoal app shell */
+  --color-shell-elevated: #2a2728; /* Slightly lighter for cards */
+  --color-text-main: #ffffff;
+  --color-text-muted: #9ca3af;
+  --color-accent: #f02d59; /* Pink/Red accent */
+  
+  --font-sans: 'Inter', system-ui, sans-serif;
+  
+  --radius-shell: 24px;
+  --radius-card: 16px;
+  --radius-button: 10px;
 }
 
-:root {
-  --foreground-rgb: 240, 240, 245;
-  --background-start-rgb: 5, 5, 7;
-  --background-end-rgb: 5, 5, 7;
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-start-rgb));
+/* Base resets */
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-background-outer);
+  color: var(--color-text-main);
+  font-family: var(--font-sans);
+  height: 100%;
+  width: 100%;
   overflow-x: hidden;
 }
 
+/* Custom Utilities */
 @layer utilities {
-  .text-balance { text-wrap: balance; }
-  
-  .clip-angled {
-    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 24px), calc(100% - 24px) 100%, 0 100%);
+  .gradient-accent {
+    background: linear-gradient(135deg, #f02d59 0%, #f56d35 100%);
   }
   
-  .clip-angled-button {
-    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+  .gradient-accent-hover {
+    background: linear-gradient(135deg, #f53f68 0%, #f78250 100%);
   }
 
-  .clip-angled-tl {
-    clip-path: polygon(24px 0, 100% 0, 100% 100%, 0 100%, 0 24px);
+  /* Custom Scrollbar for inner shell */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
   }
-  
-  .glow-text {
-    text-shadow: 0 0 15px rgba(230, 57, 70, 0.6);
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
   }
-
-  .glow-box {
-    box-shadow: 0 0 20px rgba(230, 57, 70, 0.15);
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
   }
-  
-  .glass-panel {
-    background: rgba(15, 15, 22, 0.6);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
   }
 }
-
-/* Custom Scrollbar */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: #050507; }
-::-webkit-scrollbar-thumb { background: #151520; }
-::-webkit-scrollbar-thumb:hover { background: #e63946; }
-

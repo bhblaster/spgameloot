@@ -1,21 +1,17 @@
 import type { Metadata } from "next";
-import { Inter, Rajdhani } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/lib/cart";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import ToastProvider from "@/components/ToastProvider";
+import Sidebar from "@/components/Sidebar";
+import Header from "@/components/Header";
+import ClientCartWrapper from "@/components/ClientCartWrapper";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const rajdhani = Rajdhani({ 
-  weight: ['400', '500', '600', '700'],
-  subsets: ["latin"],
-  variable: "--font-rajdhani" 
-});
 
 export const metadata: Metadata = {
-  title: "SP Game Loot - Premium Digital Games",
-  description: "Your ultimate destination for premium digital games. Buy action, adventure, RPGs, and more.",
+  title: "GAMEVERSE - Premium Digital Store",
+  description: "Rebuilt to match the exact design reference.",
 };
 
 export default function RootLayout({
@@ -24,15 +20,25 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${rajdhani.variable}`}>
-      <body className="bg-primary text-light font-sans antialiased min-h-screen flex flex-col">
+    <html lang="en" className={`${inter.variable}`}>
+      <body className="bg-background-outer text-text-main font-sans antialiased h-[100dvh] w-screen overflow-hidden flex items-center justify-center p-2 sm:p-4 md:p-8">
         <CartProvider>
           <ToastProvider>
-            <Navbar />
-            <main className="flex-grow pt-20">
-              {children}
-            </main>
-            <Footer />
+            <ClientCartWrapper>
+              {/* Main Application Shell */}
+              <div className="w-full max-w-[1500px] h-full max-h-[1000px] bg-shell rounded-[var(--radius-shell)] shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex overflow-hidden relative border border-white/5">
+                
+                <Sidebar />
+                
+                <div className="flex-1 flex flex-col relative overflow-hidden bg-shell">
+                  <Header />
+                  <main className="flex-1 overflow-y-auto custom-scrollbar relative">
+                    {children}
+                  </main>
+                </div>
+
+              </div>
+            </ClientCartWrapper>
           </ToastProvider>
         </CartProvider>
       </body>

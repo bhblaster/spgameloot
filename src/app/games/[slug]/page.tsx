@@ -1,10 +1,8 @@
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { games } from '@/data/games';
 import AddToCartButton from './AddToCartButton';
-import GameCard from '@/components/GameCard';
 
 export function generateStaticParams() {
   return games.map((game) => ({
@@ -15,229 +13,122 @@ export function generateStaticParams() {
 export default function GameDetailPage({ params }: { params: { slug: string } }) {
   const game = games.find((g) => g.slug === params.slug);
 
-  if (!game) {
-    notFound();
-  }
-
-  const relatedGames = games
-    .filter(g => g.id !== game.id && g.genres.some(genre => game.genres.includes(genre)))
-    .slice(0, 4);
+  if (!game) notFound();
 
   return (
-    <div className="pb-24 bg-primary min-h-screen">
-      {/* Cinematic Hero Banner */}
-      <div className="relative w-full h-[60vh] min-h-[500px] overflow-hidden -mt-20">
-        <div className="absolute inset-0 z-0">
-          <Image 
-            src={game.heroImage} 
-            alt={game.title} 
-            fill 
-            className="object-cover object-top opacity-70"
-            priority
-          />
-          {/* Layered gradients for blending */}
-          <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/80 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-r from-primary via-transparent to-transparent opacity-80" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-accent/20 via-transparent to-transparent opacity-40 mix-blend-screen" />
-        </div>
+    <div className="w-full min-h-full flex flex-col relative pb-12">
+      {/* Hero Background */}
+      <div className="absolute top-0 left-0 w-full h-[65%] select-none pointer-events-none">
+        <Image 
+          src={game.heroImage} 
+          alt={game.title} 
+          fill 
+          className="object-cover object-top opacity-80"
+          priority
+        />
+        {/* Top gradient for header visibility */}
+        <div className="absolute inset-0 bg-gradient-to-b from-shell/80 via-transparent to-transparent h-32" />
+        {/* Bottom gradient blending into app shell */}
+        <div className="absolute inset-0 bg-gradient-to-t from-shell via-shell/50 to-transparent" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 -mt-64 relative z-10">
-        <div className="flex flex-col lg:flex-row gap-12">
+      {/* Main Content Area */}
+      <div className="relative z-10 px-10 pt-[32%] flex flex-col gap-10">
+        
+        {/* Game Info Row */}
+        <div className="flex flex-col xl:flex-row items-end gap-10">
           
-          {/* Left Column - Cover Art & Buy Box */}
-          <div className="w-full lg:w-1/3 xl:w-1/4 flex-shrink-0">
-            <div className="sticky top-28 space-y-6">
-              {/* Cover Art Container */}
-              <div className="bg-secondary p-2 shadow-[0_20px_50px_rgba(0,0,0,0.5)] clip-angled-tl border border-white/5 relative group">
-                <div className="relative aspect-[3/4] w-full clip-angled-tl overflow-hidden">
-                  <Image 
-                    src={game.coverImage} 
-                    alt={game.title} 
-                    fill 
-                    className="object-cover transition-transform duration-700 group-hover:scale-105" 
-                  />
-                  {game.salePrice && (
-                    <div className="absolute top-4 left-4 bg-accent text-white text-sm font-bold px-3 py-1.5 shadow-[0_0_15px_rgba(230,57,70,0.5)] clip-angled">
-                      -{Math.round(((game.price - game.salePrice) / game.price) * 100)}%
-                    </div>
-                  )}
-                  {/* Subtle edge highlight */}
-                  <div className="absolute inset-0 border border-white/10 clip-angled-tl pointer-events-none" />
-                </div>
-              </div>
-              
-              {/* Buy Box */}
-              <div className="glass-panel p-6 clip-angled relative overflow-hidden">
-                <div className="flex items-end justify-between mb-6 relative z-10">
-                  {game.salePrice ? (
-                    <div className="flex flex-col">
-                      <span className="text-muted line-through text-sm mb-1">${game.price.toFixed(2)}</span>
-                      <span className="text-4xl font-display font-bold text-accent">${game.salePrice.toFixed(2)}</span>
-                    </div>
-                  ) : (
-                    <span className="text-4xl font-display font-bold text-light">${game.price.toFixed(2)}</span>
-                  )}
-                </div>
-                
-                <div className="relative z-10">
-                  <AddToCartButton game={game} />
-                </div>
-                
-                {/* Meta details */}
-                <div className="mt-6 flex flex-col gap-4 text-sm border-t border-white/10 pt-6 relative z-10">
-                  <div className="flex justify-between items-center">
-                    <span className="text-muted tracking-wide">Developer</span>
-                    <span className="text-light font-bold tracking-wider">{game.developer}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-muted tracking-wide">Publisher</span>
-                    <span className="text-light font-bold tracking-wider">{game.publisher}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-muted tracking-wide">Release</span>
-                    <span className="text-light font-bold tracking-wider">
-                      {new Date(game.releaseDate).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Decorative background accent */}
-                <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-accent/5 blur-[50px]" />
-              </div>
-            </div>
+          {/* Cover Art */}
+          <div className="w-[280px] flex-shrink-0 relative aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl transition-transform duration-500 hover:scale-[1.02]">
+            <Image 
+              src={game.coverImage} 
+              alt={game.title} 
+              fill 
+              className="object-cover" 
+            />
           </div>
 
-          {/* Right Column - Title & Content */}
-          <div className="w-full lg:w-2/3 xl:w-3/4 pt-8 lg:pt-32">
+          {/* Details & Actions */}
+          <div className="flex-1 flex flex-col justify-end w-full pb-2">
             
-            {/* Header / Badges */}
-            <div className="flex flex-wrap gap-3 mb-6">
-              {game.genres.map(genre => (
-                <Link key={genre} href={`/categories/${genre.toLowerCase()}`} className="px-4 py-1.5 bg-secondary border border-white/10 hover:border-accent hover:text-light text-muted text-xs font-bold uppercase tracking-[0.2em] transition-colors">
-                  {genre}
-                </Link>
-              ))}
-            </div>
-            
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-light uppercase mb-4 leading-[0.9] glow-text">
-              {game.title}
-            </h1>
-            
-            <p className="text-2xl text-light/80 font-light mb-8 border-l-2 border-accent pl-5 max-w-2xl">
-              {game.tagline}
-            </p>
-            
-            <div className="flex items-center gap-8 mb-12 pb-8 border-b border-white/10">
-              <div className="flex items-center gap-2">
-                <svg className="w-6 h-6 text-accent" fill="currentColor" viewBox="0 0 20 20">
+            <div className="flex items-center gap-6 mb-6">
+              <h1 className="text-4xl lg:text-5xl font-bold text-white tracking-tight">{game.title}</h1>
+              <div className="flex items-center gap-1.5 text-3xl font-bold text-[#d4ad57]">
+                {game.rating}
+                <svg className="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                 </svg>
-                <span className="text-light font-bold text-xl">{game.rating}</span>
-                <span className="text-muted tracking-wider text-sm">({game.reviewCount.toLocaleString()} REVIEWS)</span>
               </div>
+            </div>
+
+            <div className="flex flex-col lg:flex-row gap-10 lg:gap-20 mb-8">
+              <p className="text-[15px] text-white/90 max-w-lg leading-relaxed font-medium">
+                {game.description}
+              </p>
               
+              <div className="grid grid-cols-[auto_auto] gap-x-12 gap-y-2 text-[13px] font-medium">
+                <div className="text-white/60">Release Date</div>
+                <div className="text-white">{new Date(game.releaseDate).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</div>
+                
+                <div className="text-white/60">Manufacturer</div>
+                <div className="text-white">{game.publisher}</div>
+                
+                <div className="text-white/60">Developer</div>
+                <div className="text-white">{game.developer}</div>
+                
+                <div className="text-white/60">Genre</div>
+                <div className="text-white">{game.genres[0]}</div>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-6">
+              {/* Platforms */}
               <div className="flex gap-3">
                 {game.platforms.map(platform => (
-                  <span key={platform} className="text-muted text-xs font-bold uppercase tracking-widest border border-white/20 px-3 py-1">
+                  <div key={platform} className="px-5 py-2.5 border border-white/20 rounded-[var(--radius-button)] flex items-center justify-center gap-2 text-sm text-white font-medium bg-white/5 hover:bg-white/10 transition-colors">
+                    {platform === 'PC' && (
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
+                    )}
+                    {platform.includes('Xbox') && (
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M11.996 0C5.371 0 0 5.373 0 12c0 6.628 5.371 12 11.996 12 6.626 0 11.996-5.372 11.996-12 0-6.627-5.37-12-11.996-12zm-5.06 7.425c.677-1.42 1.637-2.614 3.013-3.327-.12.18-.328.666-.372 1.053-.131 1.258.558 3.518 1.944 6.073-2.146-2.025-4.148-3.08-4.585-3.8zm5.06 9.873c-1.391 0-2.898-.598-4.49-1.996 1.838.243 3.65.114 5.32-.48 1.059-1.256 1.93-3.155 2.378-5.367.653 2.128 1.34 3.585 2.32 4.966-1.576 1.66-3.393 2.877-5.528 2.877zm5.556-3.79c-.443.682-1.251 1.684-2.228 2.812-.907-1.157-1.517-2.585-1.929-3.804-1.287 1.153-2.923 1.656-4.996 1.312-1.782-3.181-2.456-6.196-2.008-7.945.034-.144.095-.275.14-.414 1.348.65 2.227 1.761 2.83 3.037.26-.358.536-.71.84-1.04-.645-1.411-1.748-2.668-3.21-3.488 1.542-1.096 3.42-1.747 5.438-1.747 1.488 0 2.9.362 4.148 1.01-1.168.74-2.027 1.657-2.585 2.551.498.43.957.9 1.36 1.412 1.464-1.415 2.322-2.738 2.658-3.447.643 1.252 1.009 2.665 1.009 4.146 0 2.274-.757 4.37-2.025 6.002h-.002z"/></svg>
+                    )}
+                    {platform.includes('PS') && (
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm-2.88 16.48c-1.39 0-2.51-1.12-2.51-2.51 0-1.39 1.12-2.51 2.51-2.51 1.39 0 2.51 1.12 2.51 2.51 0 1.39-1.12 2.51-2.51 2.51zm0-6c-1.39 0-2.51-1.12-2.51-2.51s1.12-2.51 2.51-2.51 2.51 1.12 2.51 2.51-1.12 2.51-2.51 2.51zm5.76 6c-1.39 0-2.51-1.12-2.51-2.51 0-1.39 1.12-2.51 2.51-2.51s2.51 1.12 2.51 2.51c0 1.39-1.12 2.51-2.51 2.51zm0-6c-1.39 0-2.51-1.12-2.51-2.51s1.12-2.51 2.51-2.51 2.51 1.12 2.51 2.51-1.12 2.51-2.51 2.51z"/></svg>
+                    )}
                     {platform}
-                  </span>
+                  </div>
                 ))}
               </div>
+
+              {/* Purchase Actions */}
+              <AddToCartButton game={game} />
             </div>
 
-            {/* Description */}
-            <div className="mb-16 max-w-4xl">
-              <h2 className="text-sm font-bold text-accent mb-6 tracking-[0.2em] uppercase">About This Game</h2>
-              <div className="text-light/90 text-lg leading-relaxed space-y-6">
-                <p>{game.longDescription}</p>
-                <p>{game.description}</p>
-              </div>
-            </div>
-
-            {/* Gallery */}
-            {game.gallery && game.gallery.length > 0 && (
-              <div className="mb-16">
-                <h2 className="text-sm font-bold text-accent mb-6 tracking-[0.2em] uppercase">Media Gallery</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {game.gallery.map((img, idx) => (
-                    <div key={idx} className="relative aspect-video bg-secondary clip-angled overflow-hidden group border border-white/5 cursor-pointer">
-                      <Image 
-                        src={img} 
-                        alt={`${game.title} screenshot ${idx + 1}`} 
-                        fill 
-                        className="object-cover transition-transform duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100" 
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Features */}
-            {game.features && (
-              <div className="mb-16">
-                <h2 className="text-sm font-bold text-accent mb-6 tracking-[0.2em] uppercase">Key Features</h2>
-                <ul className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {game.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-start gap-4 p-4 glass-panel border-l-2 border-l-accent">
-                      <div className="w-1.5 h-1.5 bg-accent mt-2 flex-shrink-0 glow-box rounded-full" />
-                      <span className="text-light tracking-wide">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {/* System Requirements */}
-            {game.systemRequirements && (
-              <div className="mb-16">
-                <h2 className="text-sm font-bold text-accent mb-6 tracking-[0.2em] uppercase">System Requirements</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-white/10 clip-angled-tl border border-white/10 overflow-hidden">
-                  <div className="bg-secondary p-8">
-                    <h3 className="text-light font-display font-bold mb-6 uppercase tracking-widest text-lg">Minimum</h3>
-                    <ul className="text-sm text-muted space-y-4">
-                      {game.systemRequirements.minimum.map((req, idx) => (
-                        <li key={idx} className="flex gap-3 items-center">
-                          <span className="w-4 h-[1px] bg-white/20"></span>
-                          {req}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div className="bg-secondary p-8">
-                    <h3 className="text-light font-display font-bold mb-6 uppercase tracking-widest text-lg">Recommended</h3>
-                    <ul className="text-sm text-muted space-y-4">
-                      {game.systemRequirements.recommended.map((req, idx) => (
-                        <li key={idx} className="flex gap-3 items-center">
-                          <span className="w-4 h-[1px] bg-accent/50"></span>
-                          <span className="text-light/90">{req}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
         </div>
 
-        {/* Related Games */}
-        {relatedGames.length > 0 && (
-          <div className="mt-24 pt-16 border-t border-white/5 relative">
-            <div className="flex flex-col items-center mb-12 text-center">
-              <h2 className="text-accent text-sm font-bold tracking-[0.2em] uppercase mb-2">Continue Exploring</h2>
-              <h3 className="font-display text-4xl font-bold text-light uppercase">Similar Titles</h3>
-            </div>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {relatedGames.map(rg => (
-                <GameCard key={rg.id} game={rg} />
-              ))}
-            </div>
+        {/* Screenshot Gallery */}
+        {game.gallery && game.gallery.length > 0 && (
+          <div className="flex items-center gap-4 mt-6">
+            {game.gallery.slice(0, 3).map((img, idx) => (
+              <div key={idx} className="flex-1 aspect-[16/10] rounded-[var(--radius-card)] overflow-hidden relative group cursor-pointer">
+                <Image 
+                  src={img} 
+                  alt={`${game.title} screenshot ${idx + 1}`} 
+                  fill 
+                  className="object-cover transition-transform duration-500 group-hover:scale-[1.03]" 
+                />
+                <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors" />
+              </div>
+            ))}
+            <button className="flex-shrink-0 w-12 h-12 ml-2 rounded-full bg-shell-elevated hover:bg-[#312e30] flex items-center justify-center transition-colors text-white/80">
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
           </div>
         )}
+        
       </div>
     </div>
   );
