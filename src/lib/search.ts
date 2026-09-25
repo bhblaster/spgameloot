@@ -10,7 +10,7 @@ export const searchGames = (query: string, filters: SearchFilters = {}, sort: st
     results = results.filter(game => 
       game.title.toLowerCase().includes(lowerQuery) ||
       game.developer.toLowerCase().includes(lowerQuery) ||
-      game.tags.some(tag => tag.toLowerCase().includes(lowerQuery))
+      (game.tags || []).some(tag => tag.toLowerCase().includes(lowerQuery))
     );
   }
 

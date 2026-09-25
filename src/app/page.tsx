@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 export default function Home() {
-  const featuredGame = games.find(g => g.slug === 'shadow-protocol') || games[0];
+  const featuredGame = games.find(g => g.slug === 'hogwarts-legacy') || games[0];
   const trendingGames = games.filter(g => g.trending).slice(0, 4);
   const newReleases = games.filter(g => g.newRelease).slice(0, 4);
 

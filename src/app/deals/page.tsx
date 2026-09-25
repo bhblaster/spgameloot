@@ -1,37 +1,17 @@
 import React from 'react';
-import { games } from '@/data/games';
-import GameCard from '@/components/GameCard';
 
-export default function DealsPage() {
-  const deals = games.filter(g => g.salePrice && g.salePrice < g.price);
-  
-  // Sort by highest discount percentage
-  deals.sort((a, b) => {
-    const aDiscount = (a.price - a.salePrice!) / a.price;
-    const bDiscount = (b.price - b.salePrice!) / b.price;
-    return bDiscount - aDiscount;
-  });
-
+export default function Page() {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div className="mb-12 text-center bg-gradient-to-r from-accent/20 via-primary to-accent/20 border border-accent/30 py-12 rounded-sm clip-angled">
-        <h1 className="text-4xl md:text-5xl font-display font-bold text-white uppercase tracking-wider mb-4">
-          Hot <span className="text-accent glow-text">Deals</span>
-        </h1>
-        <p className="text-gray-300 text-lg max-w-2xl mx-auto">
-          Score epic games at massive discounts. Grab these limited-time offers before they're gone!
-        </p>
+    <div className="w-full h-full p-10 flex flex-col items-center justify-center text-center mt-12">
+      <div className="w-24 h-24 bg-shell border border-white/5 rounded-[var(--radius-card)] flex items-center justify-center mb-6 shadow-xl mx-auto">
+        <svg className="w-10 h-10 text-accent/50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
       </div>
-
-      <div className="mb-8 pb-4 border-b border-gray-800">
-        <h2 className="text-2xl font-bold text-white">Showing {deals.length} deals</h2>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {deals.map(game => (
-          <GameCard key={game.id} game={game} />
-        ))}
-      </div>
+      <h1 className="text-3xl font-bold text-white mb-3">Special Deals</h1>
+      <p className="text-white/50 max-w-md mx-auto">
+        This section is currently under construction in the new application shell. Check out the Home and Library pages for the main functionality.
+      </p>
     </div>
   );
 }

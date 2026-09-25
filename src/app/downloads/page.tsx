@@ -8,7 +8,7 @@ export default function Page() {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       </div>
-      <h1 className="text-3xl font-bold text-white mb-3">Categories</h1>
+      <h1 className="text-3xl font-bold text-white mb-3">My Downloads</h1>
       <p className="text-white/50 max-w-md mx-auto">
         This section is currently under construction in the new application shell. Check out the Home and Library pages for the main functionality.
       </p>
