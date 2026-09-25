@@ -22,11 +22,11 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
   return (
     <>
       <div 
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm z-[100] transition-opacity rounded-[var(--radius-shell)]"
+        className="absolute inset-0 bg-black/60 backdrop-blur-sm z-[100] transition-opacity"
         onClick={onClose}
       />
       
-      <div className={`absolute inset-y-0 right-0 z-[100] w-full max-w-md bg-shell-elevated border-l border-white/5 shadow-2xl flex flex-col transform transition-transform duration-300 ${isOpen ? 'translate-x-0' : 'translate-x-full'} rounded-r-[var(--radius-shell)]`}>
+      <div className={`absolute inset-y-0 right-0 z-[100] w-full max-w-md bg-shell-elevated border-l border-white/5 shadow-2xl flex flex-col transform transition-transform duration-300 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
         
         <div className="px-8 py-6 border-b border-white/5 flex items-center justify-between">
           <h2 className="text-xl font-bold text-white">Your Cart</h2>

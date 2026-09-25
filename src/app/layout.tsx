@@ -21,12 +21,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable}`}>
-      <body className="bg-background-outer text-text-main font-sans antialiased h-[100dvh] w-screen overflow-hidden flex items-center justify-center p-2 sm:p-4 md:p-8">
+      <body className="bg-shell text-text-main font-sans antialiased h-[100dvh] w-screen overflow-hidden flex">
         <CartProvider>
           <ToastProvider>
             <ClientCartWrapper>
               {/* Main Application Shell */}
-              <div className="w-full max-w-[1500px] h-full max-h-[1000px] bg-shell rounded-[var(--radius-shell)] shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex overflow-hidden relative border border-white/5">
+              <div className="w-full h-full bg-shell flex overflow-hidden relative">
                 
                 <Sidebar />
                 
