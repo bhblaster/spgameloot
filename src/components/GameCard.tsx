@@ -21,7 +21,7 @@ export default function GameCard({ game }: GameCardProps) {
   };
 
   return (
-    <Link href={`/games/${game.slug}`} className="block group relative w-full h-[320px] rounded-[var(--radius-card)] overflow-hidden transition-all duration-300 shadow-lg">
+    <Link href={`/games/${game.slug}`} className="block group relative w-full aspect-[2/3] rounded-[var(--radius-card)] overflow-hidden transition-all duration-300 shadow-lg">
       <div className="absolute inset-0 bg-shell">
         <Image 
           src={game.coverImage} 

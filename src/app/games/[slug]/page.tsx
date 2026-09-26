@@ -39,7 +39,7 @@ export default function GameDetailPage({ params }: { params: { slug: string } })
         <div className="flex flex-col xl:flex-row items-end gap-10">
           
           {/* Cover Art */}
-          <div className="w-[280px] flex-shrink-0 relative aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl transition-transform duration-500 hover:scale-[1.02]">
+          <div className="w-[280px] flex-shrink-0 relative aspect-[2/3] rounded-2xl overflow-hidden shadow-2xl transition-transform duration-500 hover:scale-[1.02]">
             <Image 
               src={game.coverImage} 
               alt={game.title} 
